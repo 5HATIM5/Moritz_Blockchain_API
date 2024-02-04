@@ -1,15 +1,15 @@
 from fastapi import FastAPI
 import fastapi as _fastapi
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException
 # from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 
-from typing import Annotated
+# from typing import Annotated
 from pydantic import BaseModel
 # from sqlalchemy import insert, text
 # from sqlalchemy.orm import Session
 
-from database import SessionLocal
+# from database import SessionLocal
 import blockchain as _blockchain
 # from models.products import Product
 
@@ -65,7 +65,8 @@ class ProductCreate(BaseModel):
 
 # BLOCKCHAIN - Endpoint To Mine A Block
 @app.post("/mine_block/", tags=["Blockchain Methods"])
-async def mine_block(data: str, ProductFormData: ProductCreate, db: db_dependency):
+# db: db_dependency
+async def mine_block(data: str, ProductFormData: ProductCreate, ):
     if not blockchain.is_chain_valid():
         return _fastapi.HTTPException(
             status_code=400, detail="The Blockchain Is Invalid"

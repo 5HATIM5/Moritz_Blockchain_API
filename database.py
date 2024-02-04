@@ -2,7 +2,7 @@
 # from sqlalchemy.ext.declarative import declarative_base
 # from sqlalchemy.orm import sessionmaker
 
-from models.products import Product
+# from models.products import Product
 
 
 DATABASE_URL = "postgresql://postgres:admin@localhost:5432/BlockchainProductVerfirierDB"
@@ -12,4 +12,4 @@ DATABASE_URL = "postgresql://postgres:admin@localhost:5432/BlockchainProductVerf
 
 # Base = declarative_base()
 
-products_table = Product.__table__
+# products_table = Product.__table__
