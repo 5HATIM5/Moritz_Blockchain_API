@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 import fastapi as _fastapi
 from fastapi import FastAPI, HTTPException, Depends
-from fastapi.encoders import jsonable_encoder
+# from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 
 from typing import Annotated
@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 
 from database import SessionLocal
 import blockchain as _blockchain
-from models.products import Product
+# from models.products import Product
 
 blockchain = _blockchain.Blockchain()
 app = FastAPI()
