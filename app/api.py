@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from typing import Annotated
 from pydantic import BaseModel
 # from sqlalchemy import insert, text
-from sqlalchemy.orm import Session
+# from sqlalchemy.orm import Session
 
 from database import SessionLocal
 import blockchain as _blockchain
@@ -17,15 +17,15 @@ blockchain = _blockchain.Blockchain()
 app = FastAPI()
 
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+# def get_db():
+#     db = SessionLocal()
+#     try:
+#         yield db
+#     finally:
+#         db.close()
 
 
-db_dependency = Annotated[Session, Depends(get_db)]
+# db_dependency = Annotated[Session, Depends(get_db)]
 
 origins = ["http://localhost:3000", "*"]
 
@@ -43,16 +43,16 @@ async def root():
 
 
 # DB CONNECTION CHECKER
-@app.get("/dbConnection", tags=["Database Connection"])
-async def check_db_connection(db: db_dependency):
-    try:
-        # query = text("SELECT 1")
+# @app.get("/dbConnection", tags=["Database Connection"])
+# async def check_db_connection(db: db_dependency):
+#     try:
+#         # query = text("SELECT 1")
 
-        # db.execute(query)
+#         # db.execute(query)
 
-        return {"Message": "Database connection is active"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Error connecting to the database")
+#         return {"Message": "Database connection is active"}
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail="Error connecting to the database")
 
 
 # BLOCKCHAIN
