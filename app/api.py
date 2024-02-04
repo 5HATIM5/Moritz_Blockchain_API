@@ -1,8 +1,9 @@
 from fastapi import FastAPI
-import fastapi as _fastapi
 from fastapi import FastAPI, HTTPException, Depends
+from fastapi import File, UploadFile
+import fastapi as _fastapi
 
-# from fastapi.encoders import jsonable_encoder
+from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 
 from typing import Annotated
@@ -169,6 +170,74 @@ async def get_all_products(db: db_dependency):
                 response_data.append(product_data)
 
         return {"Message": "All Products Listed", "Response": response_data}
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+# CRUD FOR PRODUCTS - Endpoint To Get Product By ID
+@app.get("/products/{product_id}", tags=["CRUD Product - Methods"])
+async def get_products_by_id(db: db_dependency, product_id: int):
+    try:
+        product = db.query(Product).filter(Product.id == product_id).first()
+
+        db.commit()
+
+        db.refresh(product)
+
+        return {"Message": "Product Listed", "Response": product}
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+# CRUD FOR PRODUCTS - Endpoint To Upload Products Image
+@app.post("/store/product/image", tags=["CRUD Product - Methods"])
+async def store_product_image(
+    product_id: int,
+    product_image: UploadFile = File(...),
+):
+    try:
+        filename = f"{product_id}_{(product_image.filename)}"
+        with open(f"uploads/{filename}", "wb") as f:
+            f.write(product_image.file.read())
+
+        return {"Message": "Image uploaded successfully"}
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+class ProductUpdate(BaseModel):
+    name: str
+    production_location: str
+    price: float
+    production_date: str  # Assuming date is passed as a string in ISO format
+
+
+# CRUD FOR PRODUCTS - Endpoint To Update Products
+@app.put("/product/{product_id}", tags=["CRUD Product - Methods"])
+async def update_product(
+    product_id: int,
+    product_update: ProductUpdate,
+    db: Session = Depends(get_db),
+):
+    try:
+        product = db.query(Product).filter(Product.id == product_id).first()
+
+        if product:
+            product.name = product_update.name
+            product.production_location = product_update.production_location
+            product.price = product_update.price
+            product.production_date = product_update.production_date
+
+            db.commit()
+            db.refresh(product)
+
+            return {
+                "Message": "Product updated successfully",
+                "Updated Product": jsonable_encoder(product),
+            }
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
