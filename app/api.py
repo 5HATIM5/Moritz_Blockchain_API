@@ -40,11 +40,6 @@ app.add_middleware(
 )
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
 # DB CONNECTION CHECKER
 @app.get("/dbConnection", tags=["Database Connection"])
 async def check_db_connection(db: db_dependency):
