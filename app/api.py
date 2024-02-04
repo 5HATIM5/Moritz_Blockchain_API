@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from typing import Annotated
 from pydantic import BaseModel
-from sqlalchemy import insert, text
+# from sqlalchemy import insert, text
 from sqlalchemy.orm import Session
 
 from database import SessionLocal
@@ -74,11 +74,11 @@ async def mine_block(data: str, ProductFormData: ProductCreate, db: db_dependenc
     try:
         block = blockchain.mine_block(data=data)
         ProductFormData.block_hash = block["block_hash"]
-        response = await store_product(db, ProductFormData)
+        # response = await store_product(db, ProductFormData)
         return {
             "message": "Block mined and product stored successfully",
             "block": block,
-            "response": response,
+            # "response": response,
         }
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -113,55 +113,55 @@ async def previous_block():
 
     return blockchain.get_previous_block()
 
-# CRUD FOR PRODUCTS - Endpoint To Store Products
-@app.post("/store/product/", tags=["CRUD Product - Methods"])
-async def store_product( db: db_dependency, product: ProductCreate):
-    try:
-        print(product)
-        query = insert(Product).values(
-            name=product.name,
-            production_location=product.production_location,
-            price=product.price,
-            production_date=product.production_date,
-            block_hash=product.block_hash,
-        )
-        result = db.execute(query)
+# # CRUD FOR PRODUCTS - Endpoint To Store Products
+# @app.post("/store/product/", tags=["CRUD Product - Methods"])
+# async def store_product( db: db_dependency, product: ProductCreate):
+#     try:
+#         print(product)
+#         query = insert(Product).values(
+#             name=product.name,
+#             production_location=product.production_location,
+#             price=product.price,
+#             production_date=product.production_date,
+#             block_hash=product.block_hash,
+#         )
+#         result = db.execute(query)
 
 
-        new_product_id = result.inserted_primary_key[0]
+#         new_product_id = result.inserted_primary_key[0]
 
-        db.commit()
+#         db.commit()
 
 
-        return {
-            "Message": "Product created successfully",
-            "id": new_product_id,
-            "Product": jsonable_encoder(product),
-        }
+#         return {
+#             "Message": "Product created successfully",
+#             "id": new_product_id,
+#             "Product": jsonable_encoder(product),
+#         }
 
-    except Exception as e:
-        print(e)
-        raise HTTPException(status_code=400, detail=str(e))
+#     except Exception as e:
+#         print(e)
+#         raise HTTPException(status_code=400, detail=str(e))
 
-# CRUD FOR PRODUCTS - Endpoint To Get All Products
-@app.get("/products/", tags=["CRUD Product - Methods"])
-async def get_all_products(db: db_dependency):
-    try:
-        products = db.query(Product).all()
+# # CRUD FOR PRODUCTS - Endpoint To Get All Products
+# @app.get("/products/", tags=["CRUD Product - Methods"])
+# async def get_all_products(db: db_dependency):
+#     try:
+#         products = db.query(Product).all()
 
-        if products:
-            response_data = []
-            for product in products:
-                product_data = {
-                    "id": product.id,
-                    "name": product.name,
-                    "location": product.production_location,
-                    "price": product.price,
-                    "date": product.production_date,
-                }
-                response_data.append(product_data)
+#         if products:
+#             response_data = []
+#             for product in products:
+#                 product_data = {
+#                     "id": product.id,
+#                     "name": product.name,
+#                     "location": product.production_location,
+#                     "price": product.price,
+#                     "date": product.production_date,
+#                 }
+#                 response_data.append(product_data)
 
-        return {"Message": "All Products Listed", "Response": response_data}
+#         return {"Message": "All Products Listed", "Response": response_data}
 
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+#     except Exception as e:
+#         raise HTTPException(status_code=400, detail=str(e))
