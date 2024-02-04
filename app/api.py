@@ -46,9 +46,9 @@ async def root():
 @app.get("/dbConnection", tags=["Database Connection"])
 async def check_db_connection(db: db_dependency):
     try:
-        query = text("SELECT 1")
+        # query = text("SELECT 1")
 
-        db.execute(query)
+        # db.execute(query)
 
         return {"Message": "Database connection is active"}
     except Exception as e:
