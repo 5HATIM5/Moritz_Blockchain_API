@@ -1,13 +1,13 @@
 from fastapi import FastAPI
 import fastapi as _fastapi
 from fastapi import FastAPI, HTTPException, Depends
+
 # from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 
 from typing import Annotated
 from pydantic import BaseModel
-from sqlalchemy import insert
-# from sqlalchemy import insert, text
+from sqlalchemy import insert, text
 from sqlalchemy.orm import Session
 
 from database import SessionLocal
@@ -38,6 +38,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
@@ -47,9 +48,9 @@ async def root():
 @app.get("/dbConnection", tags=["Database Connection"])
 async def check_db_connection(db: db_dependency):
     try:
-        # query = text("SELECT 1")
+        query = text("SELECT 1")
 
-        # db.execute(query)
+        db.execute(query)
 
         return {"Message": "Database connection is active"}
     except Exception as e:
@@ -64,10 +65,11 @@ class ProductCreate(BaseModel):
     production_date: str  # Assuming date is passed as a string in ISO format
     block_hash: str
 
+
 # BLOCKCHAIN - Endpoint To Mine A Block
 @app.post("/mine_block/", tags=["Blockchain Methods"])
 # db: db_dependency
-async def mine_block(data: str, ProductFormData: ProductCreate, ):
+async def mine_block(data: str, ProductFormData: ProductCreate, db: db_dependency):
     if not blockchain.is_chain_valid():
         return _fastapi.HTTPException(
             status_code=400, detail="The Blockchain Is Invalid"
@@ -76,14 +78,15 @@ async def mine_block(data: str, ProductFormData: ProductCreate, ):
     try:
         block = blockchain.mine_block(data=data)
         ProductFormData.block_hash = block["block_hash"]
-        # response = await store_product(db, ProductFormData)
+        response = await store_product(db, ProductFormData)
         return {
             "message": "Block mined and product stored successfully",
             "block": block,
-            # "response": response,
+            "response": response,
         }
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
 
 # BLOCKCHAIN - Endpoint To Return A Blockchain
 @app.get("/blockchain/", tags=["Blockchain Methods"])
@@ -95,6 +98,7 @@ async def get_blockchain():
     chain = blockchain.chain
     return chain
 
+
 # BLOCKCHAIN - Endpoint To See If The Chain Is Valid
 @app.get("/validate/", tags=["Blockchain Methods"])
 async def is_blockchain_valid():
@@ -104,6 +108,7 @@ async def is_blockchain_valid():
         )
 
     return blockchain.is_chain_valid()
+
 
 # BLOCKCHAIN - Endpoint To Return The Last Block
 @app.get("/blockchain/last/", tags=["Blockchain Methods"])
@@ -115,9 +120,10 @@ async def previous_block():
 
     return blockchain.get_previous_block()
 
+
 # # CRUD FOR PRODUCTS - Endpoint To Store Products
 @app.post("/store/product/", tags=["CRUD Product - Methods"])
-async def store_product( db: db_dependency, product: ProductCreate):
+async def store_product(db: db_dependency, product: ProductCreate):
     try:
         print(product)
         query = insert(Product).values(
@@ -129,11 +135,9 @@ async def store_product( db: db_dependency, product: ProductCreate):
         )
         result = db.execute(query)
 
-
         new_product_id = result.inserted_primary_key[0]
 
         db.commit()
-
 
         return {
             "Message": "Product created successfully",
@@ -144,6 +148,7 @@ async def store_product( db: db_dependency, product: ProductCreate):
     except Exception as e:
         print(e)
         raise HTTPException(status_code=400, detail=str(e))
+
 
 # CRUD FOR PRODUCTS - Endpoint To Get All Products
 @app.get("/products/", tags=["CRUD Product - Methods"])
