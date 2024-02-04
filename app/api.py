@@ -1,31 +1,31 @@
 from fastapi import FastAPI
 import fastapi as _fastapi
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 # from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 
-# from typing import Annotated
+from typing import Annotated
 from pydantic import BaseModel
 # from sqlalchemy import insert, text
-# from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session
 
-# from database import SessionLocal
+from database import SessionLocal
 import blockchain as _blockchain
-# from models.products import Product
+from models.products import Product
 
 blockchain = _blockchain.Blockchain()
 app = FastAPI()
 
 
-# def get_db():
-#     db = SessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
-# db_dependency = Annotated[Session, Depends(get_db)]
+db_dependency = Annotated[Session, Depends(get_db)]
 
 origins = ["http://localhost:3000", "*"]
 
@@ -43,16 +43,16 @@ async def root():
 
 
 # DB CONNECTION CHECKER
-# @app.get("/dbConnection", tags=["Database Connection"])
-# async def check_db_connection(db: db_dependency):
-#     try:
-#         # query = text("SELECT 1")
+@app.get("/dbConnection", tags=["Database Connection"])
+async def check_db_connection(db: db_dependency):
+    try:
+        # query = text("SELECT 1")
 
-#         # db.execute(query)
+        # db.execute(query)
 
-#         return {"Message": "Database connection is active"}
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail="Error connecting to the database")
+        return {"Message": "Database connection is active"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error connecting to the database")
 
 
 # BLOCKCHAIN
@@ -144,25 +144,25 @@ async def previous_block():
 #         print(e)
 #         raise HTTPException(status_code=400, detail=str(e))
 
-# # CRUD FOR PRODUCTS - Endpoint To Get All Products
-# @app.get("/products/", tags=["CRUD Product - Methods"])
-# async def get_all_products(db: db_dependency):
-#     try:
-#         products = db.query(Product).all()
+# CRUD FOR PRODUCTS - Endpoint To Get All Products
+@app.get("/products/", tags=["CRUD Product - Methods"])
+async def get_all_products(db: db_dependency):
+    try:
+        products = db.query(Product).all()
 
-#         if products:
-#             response_data = []
-#             for product in products:
-#                 product_data = {
-#                     "id": product.id,
-#                     "name": product.name,
-#                     "location": product.production_location,
-#                     "price": product.price,
-#                     "date": product.production_date,
-#                 }
-#                 response_data.append(product_data)
+        if products:
+            response_data = []
+            for product in products:
+                product_data = {
+                    "id": product.id,
+                    "name": product.name,
+                    "location": product.production_location,
+                    "price": product.price,
+                    "date": product.production_date,
+                }
+                response_data.append(product_data)
 
-#         return {"Message": "All Products Listed", "Response": response_data}
+        return {"Message": "All Products Listed", "Response": response_data}
 
-#     except Exception as e:
-#         raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
