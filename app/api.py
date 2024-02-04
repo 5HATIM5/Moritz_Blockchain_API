@@ -151,9 +151,10 @@ async def store_product(db: db_dependency, product: ProductCreate):
 async def get_all_products(db: db_dependency):
     try:
         products = db.query(Product).all()
+        
+        response_data = []
 
         if products:
-            response_data = []
             for product in products:
                 product_data = {
                     "id": product.id,
