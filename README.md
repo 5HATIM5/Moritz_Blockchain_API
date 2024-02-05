@@ -15,7 +15,13 @@ The system seamlessly integrates blockchain technology with a product management
 
 For administrators, the system provides the capability to store product information securely within the blockchain and database. Upon adding a new product, an associated QR sticker is generated. This QR code contains crucial details about the product's authenticity, origin, and purity. Admins can affix these QR stickers to the respective products, thereby establishing a transparent and traceable record in the blockchain.
 
-![alt text](https://github.com/5HATIM5/Blockchain_Product_Verifier_UI/blob/main/readmeImages/test.drawio.png)
+![alt text](https://github.com/5HATIM5/Moritz_Blockchain_API/blob/main/ReadMeImages/test.drawio.png)
+
+## Blockchain Methods
+![alt text](https://github.com/5HATIM5/Moritz_Blockchain_API/blob/main/ReadMeImages/blockchain.png)
+
+## Products Methods
+![alt text](https://github.com/5HATIM5/Moritz_Blockchain_API/blob/main/ReadMeImages/product.png)
 
 ## Customer Journey
 
