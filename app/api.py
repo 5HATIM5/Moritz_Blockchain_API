@@ -29,7 +29,7 @@ def get_db():
 
 db_dependency = Annotated[Session, Depends(get_db)]
 
-origins = ["http://localhost:3000", "*"]
+origins = ["http://localhost:3000","" "*"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -94,6 +94,11 @@ async def get_blockchain():
     chain = blockchain.chain
     return chain
 
+
+@app.post("/reset_blockchain")
+async def reset_blockchain():
+    blockchain.reset_chain()
+    return {"message": "Blockchain reset successfully", "new_chain": blockchain.chain}
 
 # BLOCKCHAIN - Endpoint To See If The Chain Is Valid
 @app.get("/validate/", tags=["Blockchain Methods"])

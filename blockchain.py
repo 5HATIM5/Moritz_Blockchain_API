@@ -135,3 +135,15 @@ class Blockchain:
             block_index += 1
 
         return True
+
+    def reset_chain(self):
+        self.chain = list()
+        initial_block = self._create_block(
+            data="genesis block",
+            proof=1,
+            previous_hash="0",
+            index=1,
+        )
+        block_hash = _hl.sha256(str(initial_block).encode()).hexdigest()
+        initial_block["block_hash"] = block_hash
+        self.chain.append(initial_block)
