@@ -1,4 +1,4 @@
-# Blockchain API
+# Moritz Blockchain API
 
 This is a simple FastAPI-based API for managing a basic blockchain. The API includes endpoints for mining new blocks, retrieving the entire blockchain, resetting the blockchain, validating its integrity, and fetching the previous block.
 
