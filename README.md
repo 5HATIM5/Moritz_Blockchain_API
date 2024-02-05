@@ -1,17 +1,19 @@
 # Moritz Blockchain API
 
-This is a simple FastAPI-based API for managing a basic blockchain. The API includes endpoints for mining new blocks, retrieving the entire blockchain, resetting the blockchain, validating its integrity, and fetching the previous block.
+This FastAPI-based API manages a blockchain and provides endpoints for adding products to the database. The blockchain stores product data along with a generated hash for data integrity. Additionally, the API includes endpoints for mining new blocks, retrieving the entire blockchain, resetting the blockchain, validating its integrity, and fetching the previous block.
+
 
 ## Endpoints
 
-### 1. Mine Block
+### 1. Check Database Connection
 
-**Endpoint:** `POST /mine_block/`
+**Endpoint:** `GET /dbConnection`
 
-**Description:** Mines a new block and adds it to the blockchain.
+**Description:**  Checks the connection to the database..
 
-**Request:**
+**Response:**
 ```json
 {
-  "data": "Your data for the new block"
+  "Message": "Database connection is active"
 }
+```
