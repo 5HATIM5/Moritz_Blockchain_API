@@ -1,4 +1,4 @@
-# Moritz Blockchain API
+# Moritz Blockchain Product Verifier
 
 This FastAPI-based API manages a blockchain and provides endpoints for adding products to the database. The blockchain stores product data along with a generated hash for data integrity. Additionally, the API includes endpoints for mining new blocks, retrieving the entire blockchain, resetting the blockchain, validating its integrity, and fetching the previous block.
 
