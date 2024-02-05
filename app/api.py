@@ -95,7 +95,7 @@ async def get_blockchain():
     return chain
 
 
-@app.post("/reset_blockchain")
+@app.post("/reset_blockchain", tags=["Blockchain Methods"])
 async def reset_blockchain():
     blockchain.reset_chain()
     return {"message": "Blockchain reset successfully", "new_chain": blockchain.chain}
