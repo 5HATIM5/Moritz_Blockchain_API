@@ -6,8 +6,8 @@ This application seamlessly integrates blockchain technology with a product mana
 This integrated system ensures a secure and tamper-resistant ledger for product-related information, combining the benefits of blockchain technology with efficient product management capabilities. Users can leverage the provided APIs to seamlessly interact with and manage both the blockchain and product data within the application.
 
 This application features a dual-purpose journey management system catering to 
-1. Administrators
-2. Customers
+1. ***Administrators***
+2. ***Customers***
 
 The system seamlessly integrates blockchain technology with a product management system, offering distinct functionalities for each user role.
 
@@ -55,3 +55,12 @@ On the customer journey side, the application introduces a product verification 
 
 ![alt text](https://github.com/5HATIM5/Moritz_Blockchain_API/blob/main/ReadMeImages/customer.drawio%20(1).png)
 
+## 3. Use-Full Links
+
+**Production Links:** 
+1. **Product Management System** = https://moritz-blockchain-ui.vercel.app
+2. **Product Management System Backend** = https://mortiz-blockchain-api.vercel.app/docs/
+
+**GitHub Repositories:** 
+1. **Product Management / Blockchain Backend** = https://github.com/5HATIM5/Moritz_Blockchain_API
+2. **Product Management System** = https://github.com/5HATIM5/Blockchain_Product_Verifier_UI
