@@ -53,5 +53,5 @@ For administrators, the system provides the capability to store product informat
 
 On the customer journey side, the application introduces a product verification system. Customers utilize a dedicated app, the "Product Verifier," which allows them to scan the QR codes affixed to purchased products. Through this scanning process, customers can efficiently retrieve and verify detailed information about the product's origin, authenticity, and purity. This innovative approach enhances consumer trust by providing a direct means of verifying product details and ensuring the integrity of the supply chain.
 
-![alt text](https://github.com/5HATIM5/Moritz_Blockchain_API/blob/main/ReadMeImages/customer.drawio.png)
+![alt text](https://github.com/5HATIM5/Moritz_Blockchain_API/blob/main/ReadMeImages/customer.drawio%20(1).png)
 
