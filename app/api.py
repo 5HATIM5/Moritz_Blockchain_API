@@ -29,7 +29,7 @@ def get_db():
 
 db_dependency = Annotated[Session, Depends(get_db)]
 
-origins = ["http://localhost:3000","" "*"]
+origins = ["http://localhost:3000", "" "*"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -100,6 +100,7 @@ async def reset_blockchain():
     blockchain.reset_chain()
     return {"message": "Blockchain reset successfully", "new_chain": blockchain.chain}
 
+
 # BLOCKCHAIN - Endpoint To See If The Chain Is Valid
 @app.get("/validate/", tags=["Blockchain Methods"])
 async def is_blockchain_valid():
@@ -156,7 +157,7 @@ async def store_product(db: db_dependency, product: ProductCreate):
 async def get_all_products(db: db_dependency):
     try:
         products = db.query(Product).all()
-        
+
         response_data = []
 
         if products:
@@ -239,6 +240,28 @@ async def update_product(
                 "Message": "Product updated successfully",
                 "Updated Product": jsonable_encoder(product),
             }
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+# CRUD FOR PRODUCTS - Endpoint To Update Products
+@app.delete("/product/{product_id}", tags=["CRUD Product - Methods"])
+async def delete_product(
+    product_id: int,
+    db: Session = Depends(get_db),
+):
+    try:
+        product = db.query(Product).filter(Product.id == product_id).first()
+        if product is None:
+            raise HTTPException(status_code=404, detail="Product not found")
+        
+        db.delete(product)
+        db.commit()
+
+        return {
+            "Message": "Product Deleted successfully",
+        }
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
