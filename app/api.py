@@ -29,7 +29,7 @@ def get_db():
 
 db_dependency = Annotated[Session, Depends(get_db)]
 
-origins = ["http://localhost:3000", "" "*"]
+origins = ["http://localhost:3000", "*"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -95,12 +95,6 @@ async def get_blockchain():
     return chain
 
 
-@app.post("/reset_blockchain", tags=["Blockchain Methods"])
-async def reset_blockchain():
-    blockchain.reset_chain()
-    return {"message": "Blockchain reset successfully", "new_chain": blockchain.chain}
-
-
 # BLOCKCHAIN - Endpoint To See If The Chain Is Valid
 @app.get("/validate/", tags=["Blockchain Methods"])
 async def is_blockchain_valid():
@@ -127,7 +121,6 @@ async def previous_block():
 @app.post("/store/product/", tags=["CRUD Product - Methods"])
 async def store_product(db: db_dependency, product: ProductCreate):
     try:
-        print(product)
         query = insert(Product).values(
             name=product.name,
             production_location=product.production_location,
@@ -148,7 +141,6 @@ async def store_product(db: db_dependency, product: ProductCreate):
         }
 
     except Exception as e:
-        print(e)
         raise HTTPException(status_code=400, detail=str(e))
 
 
@@ -255,7 +247,7 @@ async def delete_product(
         product = db.query(Product).filter(Product.id == product_id).first()
         if product is None:
             raise HTTPException(status_code=404, detail="Product not found")
-        
+
         db.delete(product)
         db.commit()
 
@@ -265,3 +257,25 @@ async def delete_product(
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+# Application Reset Methods - Endpoint To Delete All Products
+@app.get("/product/reset", tags=["Application Reset - Methods"])
+async def reset_products(
+    db: Session = Depends(get_db),
+):
+    try:
+        db.execute(text("TRUNCATE TABLE products;"))
+        db.commit()
+
+        return {
+            "Message": "Products Table Reseted",
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+# Application Reset Methods - Endpoint To Reset Blockchain
+@app.post("/reset_blockchain", tags=["Application Reset - Methods"])
+async def reset_blockchain():
+    blockchain.reset_chain()
+    return {"message": "Blockchain reset successfully", "new_chain": blockchain.chain}
