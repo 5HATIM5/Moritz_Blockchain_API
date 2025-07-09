@@ -1,4 +1,4 @@
-# Moritz Blockchain Product Verifier (Backend)
+# Blockchain Product Verifier (Backend)
 
 
 This application seamlessly integrates blockchain technology with a product management system. The primary functionality revolves around maintaining a blockchain to ensure the integrity of product data. When new product information is submitted to the application, the blockchain processes the data and generates a unique hash. This hash, along with the product name, is then stored both in the blockchain and in the database.
